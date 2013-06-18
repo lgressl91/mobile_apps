@@ -1,0 +1,29 @@
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bluetooth_device_finder_app/bin/
+bluetooth_device_finder_app/gen/
+bluetooth_device_finder_app/.settings/
+
+BluetoothDeviceFinder-TestSuite/bin/
+BluetoothDeviceFinder-TestSuite/gen/
+BluetoothDeviceFinder-TestSuite/.settings/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+BluetoothDeviceFinder-TestSuite/.classpath
+BluetoothDeviceFinder-TestSuite/.project
+
+bluetooth_device_finder_app/.classpath
+bluetooth_device_finder_app/.project
+
