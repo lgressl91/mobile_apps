@@ -34,8 +34,6 @@ public class MainActivity extends FragmentActivity {
 
 	// Local Bluetooth adapter
 	private BluetoothAdapter mBluetoothAdapter = null;
-	
-	
 
 	/**
 	 * EVENTS
