@@ -16,9 +16,6 @@
 
 package com.example.bluetoothdevicefinder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -33,7 +30,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -46,8 +42,7 @@ public class DeviceListActivity extends Activity {
 
 	// Member fields
 	private BluetoothAdapter mBtAdapter;
-	private ArrayAdapter<String> mNewDevicesArrayAdapter;
-	private List<BluetoothListItem> itemlist_bluetooth;
+	private BluetoothList mBluetoothList;
 	private boolean broadcastreciever_registered = false;
 
 	@Override
@@ -62,8 +57,9 @@ public class DeviceListActivity extends Activity {
 		Button scanButton = (Button) findViewById(R.id.button_scan);
 		scanButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				mNewDevicesArrayAdapter.clear();
-				itemlist_bluetooth.clear();
+				
+				mBluetoothList.clear();
+				
 				doDiscovery();
 			}
 		});
@@ -75,13 +71,11 @@ public class DeviceListActivity extends Activity {
 				.getBondedDevices().toArray(new BluetoothDevice[0]);
 		Log.d(TAG, "length = " + tmp.length);
 
-		mNewDevicesArrayAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1);
-		itemlist_bluetooth = new ArrayList<BluetoothListItem>();
+		mBluetoothList = new BluetoothList(this);
 
 		// Find and set up the ListView for newly discovered devices
 		ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
-		newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
+		newDevicesListView.setAdapter(mBluetoothList.getDevicesArrayAdapter());
 		newDevicesListView.setOnItemClickListener(mDeviceClickListener);
 	}
 
@@ -154,9 +148,9 @@ public class DeviceListActivity extends Activity {
 
 			Intent intent = new Intent(getApplicationContext(),
 					DeviceFinderActivity.class);
-			intent.putExtra(EXTRA_DEVICE_ADDRESS, itemlist_bluetooth.get(arg2)
+			intent.putExtra(EXTRA_DEVICE_ADDRESS, mBluetoothList.getListItem(arg2)
 					.getMacAddress());
-			intent.putExtra(EXTRA_DEVICE_NAME, itemlist_bluetooth.get(arg2)
+			intent.putExtra(EXTRA_DEVICE_NAME, mBluetoothList.getListItem(arg2)
 					.getName());
 			startActivity(intent);
 		}
@@ -172,25 +166,14 @@ public class DeviceListActivity extends Activity {
 			// When discovery finds a device
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 
-				boolean exists = false;
-
 				BluetoothDevice device = intent
 						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				
 				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
 
-					for (int i = 0; i < itemlist_bluetooth.size(); i++) {
-						if (itemlist_bluetooth.get(i).getMacAddress()
-								.equals(device.getAddress())) {
-
-							exists = true;
-						}
-					}
-
-					if (!exists) {
-						mNewDevicesArrayAdapter.add(device.getName());
-						itemlist_bluetooth.add(new BluetoothListItem(device
-								.getName(), device.getAddress()));
+					if (!mBluetoothList.inItemList(device.getAddress())) {
+						
+						mBluetoothList.add(device.getName(), device.getAddress());
 					}
 				}
 			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
@@ -202,7 +185,7 @@ public class DeviceListActivity extends Activity {
 				Log.d(TAG, "discovery finished");
 
 				// message to user
-				if (mNewDevicesArrayAdapter.getCount() == 0) {
+				if (mBluetoothList.isArrayAdapterEmpty()) {
 					// message to user
 					Toast.makeText(getApplicationContext(),
 							"Keine Geräte gefunden", Toast.LENGTH_SHORT).show();

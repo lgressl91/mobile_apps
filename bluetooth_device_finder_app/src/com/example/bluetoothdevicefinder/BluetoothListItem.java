@@ -1,7 +1,7 @@
 package com.example.bluetoothdevicefinder;
 
 public class BluetoothListItem {
-
+	
 	private String name;
 	private String mac_address;
 
