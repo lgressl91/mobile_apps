@@ -18,10 +18,8 @@ package com.example.bluetoothdevicefinder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -38,7 +36,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class DeviceListActivity extends Activity {
@@ -47,12 +44,12 @@ public class DeviceListActivity extends Activity {
 	public static String EXTRA_DEVICE_ADDRESS = "device_address";
 	public static String EXTRA_DEVICE_NAME = "device_name";
 
-
 	// Member fields
 	private BluetoothAdapter mBtAdapter;
 	private ArrayAdapter<String> mNewDevicesArrayAdapter;
 	private List<BluetoothListItem> itemlist_bluetooth;
 	private boolean exists = false;
+	private boolean broadcastreciever_registered = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,12 +92,8 @@ public class DeviceListActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		Log.e(TAG, "++ ON START ++");
-
-		// Register broadcasts for device discovery
-		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-		this.registerReceiver(mReceiver, filter);
-		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		this.registerReceiver(mReceiver, filter);
+		
+		registerBReciever();
 		
 		doDiscovery();
 	}
@@ -109,19 +102,39 @@ public class DeviceListActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		Log.e(TAG, "--- ON RESUME ---");
+		
+		registerBReciever();
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
 		Log.e(TAG, "-- ON STOP --");
+		unregisterReceiver(mReceiver);
+		broadcastreciever_registered = false;
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		Log.e(TAG, "--- ON DESTROY ---");
-		unregisterReceiver(mReceiver);
+
+		if (broadcastreciever_registered)
+		{
+			unregisterReceiver(mReceiver);
+			broadcastreciever_registered = false;
+		}
+	}
+	
+	
+	private void registerBReciever()
+	{
+		// Register broadcasts for device discovery
+		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+		this.registerReceiver(mReceiver, filter);
+		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+		this.registerReceiver(mReceiver, filter);
+		broadcastreciever_registered = true;
 	}
 
 	private void doDiscovery() {

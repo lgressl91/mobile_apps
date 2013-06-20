@@ -4,13 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
 public class TrackingView extends View {
 	Paint p = new Paint();
@@ -40,7 +36,7 @@ public class TrackingView extends View {
 		if (rssi < -90)
 			rssi = -90;
 		next_color = (int) (((float) (Math.abs(rssi) - 40) / 50) * 255 + 1);
-		Log.d("RSSI", (String.valueOf(rssi)));
+//		Log.d("RSSI", (String.valueOf(rssi)));
 	}
 
 	@Override
