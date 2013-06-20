@@ -1,42 +1,32 @@
 package com.example.bluetoothdevicefinder;
 
 public class CalculateDistance {
-	private String str_distance;
+	private int next_color;
 	private static CalculateDistance instance;
-	
-	public static CalculateDistance Instance()
-	{
-		if(instance == null) instance = new CalculateDistance();
+
+	private static final int COLOR_MAX_DIST = 256;
+	private static final short RSSI_MIN_VALUE = -40;
+	private static final short RSSI_MAX_VALUE = -90;
+
+	public static CalculateDistance Instance() {
+		if (instance == null)
+			instance = new CalculateDistance();
 		return instance;
 	}
-	
-	private CalculateDistance(){
-		str_distance = "";
+
+	private CalculateDistance() {
+		next_color = COLOR_MAX_DIST;
 	}
-	
-	public String getStringDistance(){
-		return str_distance;
+
+	public int getNextColor() {
+		return next_color;
 	}
-	
-	public void setRSSI(short rssi){
-		if(rssi >= -45) 				str_distance = "Gefunden :-)";
-		if(rssi >= -70 && rssi < -60) 	str_distance = "In der Nähe";
-		if(rssi < -80)	 				str_distance = "Laufe herum";
-	}
-	
-	public double getDistance(short rssi){
-		
-		int rssi_c = Math.abs((int)rssi);
-		if (rssi_c >30 && rssi_c < 60 ){
-			return 0.5;
-		}
-		else if (rssi_c > 60 && rssi_c < 70 ){
-			return 1.5;
-		}
-		else if (rssi_c > 70 && rssi_c < 80 ){
-			return 5;
-		}
-		else
-			return 10;
+
+	public void setRSSI(short rssi) {
+		if (rssi > RSSI_MIN_VALUE)
+			rssi = RSSI_MIN_VALUE;
+		if (rssi < RSSI_MAX_VALUE)
+			rssi = RSSI_MAX_VALUE;
+		next_color = (int) (((float) (Math.abs(rssi) + RSSI_MIN_VALUE) / (RSSI_MIN_VALUE - RSSI_MAX_VALUE)) * COLOR_MAX_DIST);
 	}
 }

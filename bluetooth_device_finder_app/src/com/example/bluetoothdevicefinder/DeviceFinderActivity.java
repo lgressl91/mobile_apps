@@ -26,7 +26,6 @@ public class DeviceFinderActivity extends Activity {
 
 		tracked_dev_name = getIntent().getStringExtra(
 				DeviceListActivity.EXTRA_DEVICE_NAME);
-
 		setTitle(tracked_dev_name);
 
 		trackingView = new TrackingView(this);
@@ -57,10 +56,6 @@ public class DeviceFinderActivity extends Activity {
 		mBtAdapter.startDiscovery();
 	}
 
-	private void paint(int rssi) {
-		trackingView.setColor(rssi);
-	}
-
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -72,9 +67,7 @@ public class DeviceFinderActivity extends Activity {
 					short rssi = intent.getShortExtra(
 							BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
 					Log.d(TAG, "Singal=" + rssi);
-					paint(rssi);
 					calcdist.setRSSI(rssi);
-					trackingView.setRSSI(rssi);
 					startTracking();
 				} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
 						.equals(action)) {

@@ -18,36 +18,25 @@ public class MainActivity extends FragmentActivity {
 	// Debugging
 	private static final String TAG = "BluetoothActivity";
 
-	// Key names received from the BluetoothChatService Handler
-	public static final String DEVICE_NAME = "device_name";
-	public static final String TOAST = "toast";
-
 	// Intent request codes
 	private static final int REQUEST_ENABLE_BT = 3;
 
 	// Layout Views
 	private Button mChooseButton;
-	// Layout Views
 	private Button mConnectButton;
 
 	// Local Bluetooth adapter
 	private BluetoothAdapter mBluetoothAdapter = null;
 
-	/**
-	 * EVENTS
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.e(TAG, "+++ ON CREATE +++");
 
-		// Set up the window layout
 		setContentView(R.layout.activity_main);
 
-		// Get the local Bluetooth adapter
+		// Set up Bluetooth
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-		// If the adapter is null, then Bluetooth is not supported
 		if (mBluetoothAdapter == null) {
 			Toast.makeText(this, "Bluetooth is not available",
 					Toast.LENGTH_LONG).show();
@@ -58,7 +47,6 @@ public class MainActivity extends FragmentActivity {
 		mChooseButton = (Button) findViewById(R.id.btn_info);
 		mChooseButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Log.e(TAG, "CLICK: Info");
 				showDialog();
 			}
 		});
@@ -89,7 +77,7 @@ public class MainActivity extends FragmentActivity {
 		mConnectButton = (Button) findViewById(R.id.btn_find_devices);
 		mConnectButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Log.d(TAG,"CLICK: List Devices");
+				Log.d(TAG, "CLICK: List Devices");
 				Intent serverIntent = new Intent(MainActivity.this,
 						DeviceListActivity.class);
 				startActivity(serverIntent);
@@ -117,7 +105,6 @@ public class MainActivity extends FragmentActivity {
 
 	private void ensureDiscoverable() {
 		if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-//			Log.d(TAG,"Bluetooth Dialog shown");
 			Intent discoverableIntent = new Intent(
 					BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
 			discoverableIntent.putExtra(
@@ -129,14 +116,9 @@ public class MainActivity extends FragmentActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case REQUEST_ENABLE_BT:
-			// When the request to enable Bluetooth returns
 			if (resultCode == Activity.RESULT_OK) {
-				// Bluetooth is now enabled, so set up a chat session
-				Log.d(TAG,"BT enabled");
 				setupBT();
 			} else {
-				// User did not enable Bluetooth or an error occurred
-				Log.d(TAG, "BT not enabled");
 				Toast.makeText(this, R.string.bt_not_enabled_leaving,
 						Toast.LENGTH_SHORT).show();
 				finish();
@@ -160,28 +142,22 @@ public class MainActivity extends FragmentActivity {
 		}
 		return false;
 	}
-	
-	
+
 	void showDialog() {
-		DialogFragment newFragment = InformationDialogFragment.newInstance(
-                R.string.dialog_title);
-        newFragment.show(getSupportFragmentManager(), "dialog");
-    }
+		DialogFragment newFragment = InformationDialogFragment
+				.newInstance(R.string.btn_info);
+		newFragment.show(getSupportFragmentManager(), "dialog");
+	}
 
-    public void doPositiveClick() {
-        // Do stuff here.
-        Log.i("FragmentAlertDialog", "Positive click!");
-    }
-    
-    public void doNegativeClick() {
-        // Do stuff here.
-        Log.i("FragmentAlertDialog", "Negative click!");
-    }
-    
-    public BluetoothAdapter getBluetootAdapter()
-    {
-    	return this.mBluetoothAdapter;
-    }
+	public void doPositiveClick() {
+		Log.i("FragmentAlertDialog", "Positive click!");
+	}
+
+	public void doNegativeClick() {
+		Log.i("FragmentAlertDialog", "Negative click!");
+	}
+
+	public BluetoothAdapter getBluetootAdapter() {
+		return this.mBluetoothAdapter;
+	}
 }
-
-

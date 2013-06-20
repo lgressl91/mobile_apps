@@ -1,43 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="title_activity_device_finder">DeviceFinderActivity</string>
     <string name="app_name">Bluetooth Device Finder</string>
     <string name="menu_settings">Settings</string>
     <string name="btn_start">Start</string>
-    <string name="btn_info">Info</string>
-    <string name="btn_find_devices">Suche Bluetooth Geräte</string>
-    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
-    <string name="title_connected_to">connected to xxx</string>
-    <string name="title_not_connected">not connected</string>
+    <string name="btn_info">Information</string>
+    <string name="btn_find_devices">Search Bluetooth Devices</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Device Finder.</string>
+    <string name="title_not_connected">Not connected</string>
 
     <!-- DeviceListActivity -->
-    <string name="scanning">Suche läuft...</string>
-    <string name="select_device">Wähle das zu suchende Gerät</string>
+    <string name="scanning">Scanning#8230</string>
+    <string name="select_device">Choose the device to track</string>
     <string name="none_paired">No devices have been paired</string>
-    <string name="none_found">Keine Geräte gefunden</string>
+    <string name="none_found">No devices found</string>
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>
-    <string name="btn_scan">Suche nach Geräten</string>
+    <string name="btn_scan">Scan Bluetooth Devices</string>
 
     <!-- Options Menu -->
-    <string name="secure_connect">Connect a device - Secure</string>
-    <string name="insecure_connect">Connect a device - Insecure</string>
     <string name="discoverable">Make discoverable</string>
-    <string name="title_activity_pong">PongActivity</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_device_finder">DeviceFinderActivity</string>
 
     <!-- Information Dialog -->
-    <string name="dialog_information">
-Diese App dient dazu, in der Nähe befindliche bluetoothfähige Geräte zu lokalisieren.\n
-Dazu einfach auf den Button Suche Bluetooth Geräte klicken.\n
-Danach das gewünschte Gerät aus der Liste wählen und am farbigen Kreis orientieren\n\n
+    <string name="dialog_information">This App is designed for simple localization of bluetooth devices in your surroundings.\n
+Therefore simply choose a available device in the list.\n
+Then move around und orientate yourself with the animation shown to you like the following:\n\n
 
-Je grüner der Kreis wird, desto näher kommst du dem gesuchten Gerät.\n
-Je roter der Kreis, desto weiter entfernst du dich.
-</string>
-    <string name="dialog_read">Gelesen</string>
-    <string name="dialog_title">Information</string>
+The greener the indicator gets the closer you are to the device you are looking for.\n
+In contrary with more distance the red amount of the indicator increases.</string>
+    <string name="dialog_read">OK!</string>
 
 </resources>
