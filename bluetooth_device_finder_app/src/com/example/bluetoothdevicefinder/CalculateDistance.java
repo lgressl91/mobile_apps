@@ -4,9 +4,9 @@ public class CalculateDistance {
 	private int next_color;
 	private static CalculateDistance instance;
 
-	private static final int COLOR_MAX_DIST = 256;
-	private static final short RSSI_MIN_VALUE = -40;
-	private static final short RSSI_MAX_VALUE = -90;
+	public static final int COLOR_MAX_DIST = 256;
+	public static final short RSSI_MIN_VALUE = -40;
+	public static final short RSSI_MAX_VALUE = -90;
 
 	public static CalculateDistance Instance() {
 		if (instance == null)
